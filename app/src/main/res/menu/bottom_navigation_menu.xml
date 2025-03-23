@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:title="@string/home"
+        android:icon="@drawable/barn_svgrepo_com" />
+
+    <item
+        android:id="@+id/nav_schedule"
+        android:title="@string/schedule"
+        android:icon="@drawable/calendar_days_svgrepo_com" />
+
+    <item
+        android:id="@+id/nav_market"
+        android:title="@string/market"
+        android:icon="@drawable/market_stall_svgrepo_com" />
+
+    <item
+        android:id="@+id/nav_expenses"
+        android:title="@string/expenses"
+        android:icon="@drawable/sell_product_svgrepo_com" />
+
+    <item
+        android:id="@+id/nav_profile"
+        android:title="@string/profile"
+        android:icon="@drawable/profile_1335_svgrepo_com" />
+</menu>

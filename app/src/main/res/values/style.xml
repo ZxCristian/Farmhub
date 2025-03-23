@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CircleImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+        <item name="strokeColor">#f90</item> <!-- Change this to any color you like -->
+        <item name="strokeWidth">5dp</item> <!-- Adjust thickness -->
+    </style>
+
+</resources>

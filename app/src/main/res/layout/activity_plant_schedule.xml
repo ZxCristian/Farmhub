@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="#F5F5F5"
+    android:padding="10dp">
+
+    <!-- Plant Image -->
+    <ImageView
+        android:id="@+id/imgPlant"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/fh_logo"
+        android:scaleType="fitCenter"
+        android:layout_marginEnd="10dp" />
+
+    <!-- Plant Details -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvPlantName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Plant Name"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvDatePlanted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date Planted: 01/01/2024"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvHarvestDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Harvest Date: 01/15/2024"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Harvest Button -->
+    <Button
+        android:id="@+id/btnHarvest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Harvest"
+        android:backgroundTint="@color/green"
+        android:textColor="@android:color/white"
+        android:padding="5dp" />
+
+</LinearLayout>

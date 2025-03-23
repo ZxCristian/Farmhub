@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/PreOrderImage"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:scaleType="fitCenter"
+        />
+
+    <TextView
+        android:id="@+id/PreOrderproductName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="#000"
+        android:gravity="center"
+        android:text="Item Name"/>
+    <TextView
+        android:id="@+id/PreOrderproductWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="#000"
+        android:gravity="center"
+        android:text="Price per Kg"/>
+    <TextView
+        android:id="@+id/PreOrderproductSeller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="#000"
+        android:gravity="center"
+        android:text="Seller: Cristian"/>
+</LinearLayout>
