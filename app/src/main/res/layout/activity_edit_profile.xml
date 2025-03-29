@@ -63,7 +63,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:shapeAppearanceOverlay="@style/CircleImageView"
-                app:strokeColor="@color/green"
+                app:strokeColor="@color/orange"
                 app:strokeWidth="5dp" />
 
             <TextView
@@ -267,7 +267,7 @@
                 android:id="@+id/btnConfirm"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/green"
+                android:backgroundTint="@color/orange"
                 android:text="Confirm"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"

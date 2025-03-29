@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".Market"
     android:id="@+id/nav_market">
 
     <LinearLayout
@@ -61,9 +60,9 @@
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabIndicatorColor="@color/green"
+        app:tabIndicatorColor="@color/orange"
         app:tabTextColor="@android:color/black"
-        app:tabSelectedTextColor="@color/green"
+        app:tabSelectedTextColor="@color/orange"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

@@ -73,7 +73,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/CircleImageView"
-                app:strokeColor="@color/green"
+                app:strokeColor="@color/orange"
                 app:strokeWidth="5dp" />
 
             <TextView
@@ -91,7 +91,7 @@
                 app:layout_constraintTop_toBottomOf="@id/imgProfile" />
 
             <LinearLayout
-                android:layout_width="300dp"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -99,7 +99,7 @@
 
                 <EditText
                     android:id="@+id/etFirstName"
-                    android:layout_width="150dp"
+                    android:layout_width="175dp"
                     android:layout_height="wrap_content"
                     android:hint="First Name"
                     android:inputType="textPersonName"
@@ -110,7 +110,7 @@
 
                 <EditText
                     android:id="@+id/etLastname"
-                    android:layout_width="150dp"
+                    android:layout_width="175dp"
                     android:layout_height="wrap_content"
                     android:hint="Last Name"
 
@@ -130,19 +130,21 @@
                 android:orientation="horizontal"
                 android:paddingTop="5dp">
 
-                <EditText
-                    android:id="@+id/etGender"
-                    android:layout_width="85dp"
+                <Spinner
+                    android:id="@+id/spinnerGender"
+                    android:layout_width="110dp"
                     android:layout_height="wrap_content"
-
                     android:hint="Gender"
-                    android:inputType="textEmailAddress"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/etFirstName" />
+                    app:layout_constraintTop_toBottomOf="@+id/etFirstName"
+                    android:entries="@array/gender_options"/>
+
+
+
 
                 <EditText
                     android:id="@+id/etAge"
-                    android:layout_width="55dp"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:hint="Age"
                     android:inputType="textEmailAddress"
@@ -150,7 +152,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/etFirstName" />
 
                 <LinearLayout
-                    android:layout_width="160dp"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
@@ -159,41 +161,23 @@
                     tools:layout_editor_absoluteX="55dp">
 
                     <EditText
-                        android:id="@+id/etFullName3"
+                        android:id="@+id/etBirthday"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:focusable="false"
                         android:hint="Birthday" />
 
-                    <ImageView
-                        android:id="@+id/btnWaterCalendar2"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:contentDescription="Calendar"
-                        android:paddingStart="5dp"
-                        android:src="@drawable/calendar_days_svgrepo_com"
-                        tools:layout_editor_absoluteX="322dp"
-                        tools:layout_editor_absoluteY="368dp" />
+
                 </LinearLayout>
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Email"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.160"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etGender" />
+
 
             <EditText
                 android:id="@+id/etEmail"
-                android:layout_width="302dp"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
@@ -203,6 +187,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvEmail" />
 
+            <EditText
+                android:id="@+id/etContact"
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:hint="Contact number"
+                android:inputType="textEmailAddress"
+                android:padding="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.597"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etCity" />
             <TextView
                 android:id="@+id/tvAddress"
                 android:layout_width="wrap_content"
@@ -218,11 +213,10 @@
 
             <EditText
                 android:id="@+id/etAddress"
-                android:layout_width="302dp"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:hint="Address"
                 android:inputType="textEmailAddress"
-                android:padding="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.597"
                 app:layout_constraintStart_toStartOf="parent"
@@ -237,7 +231,7 @@
 
                 <EditText
                     android:id="@+id/etCity"
-                    android:layout_width="150dp"
+                    android:layout_width="175dp"
                     android:layout_height="wrap_content"
                     android:hint="City"
                     android:inputType="textEmailAddress"
@@ -251,7 +245,7 @@
 
                 <EditText
                     android:id="@+id/etState"
-                    android:layout_width="150dp"
+                    android:layout_width="175dp"
                     android:layout_height="wrap_content"
                     android:hint="State/Province"
                     android:inputType="textEmailAddress"
@@ -259,17 +253,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/etAddress" />
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/etContact"
-                android:layout_width="302dp"
-                android:layout_height="wrap_content"
-                android:hint="Contact number"
-                android:inputType="textEmailAddress"
-                android:padding="12dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.597"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etCity" />
+
 
             <TextView
 
@@ -286,11 +270,10 @@
 
             <EditText
                 android:id="@+id/etFAddress"
-                android:layout_width="302dp"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:hint="Address"
                 android:inputType="textEmailAddress"
-                android:padding="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.597"
                 app:layout_constraintStart_toStartOf="parent"
@@ -305,7 +288,7 @@
 
                 <EditText
                     android:id="@+id/etFCity"
-                    android:layout_width="150dp"
+                    android:layout_width="175dp"
                     android:layout_height="wrap_content"
 
                     android:hint="City"
@@ -316,7 +299,7 @@
 
                 <EditText
                     android:id="@+id/etFState"
-                    android:layout_width="150dp"
+                    android:layout_width="175dp"
                     android:layout_height="wrap_content"
                     android:hint="State/Province"
                     android:inputType="textEmailAddress"
@@ -330,7 +313,7 @@
 
             <RelativeLayout
                 android:id="@+id/passwordLayout"
-                android:layout_width="300dp"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -348,7 +331,7 @@
 
                 <EditText
                     android:id="@+id/etPassword"
-                    android:layout_width="250dp"
+                    android:layout_width="350dp"
                     android:layout_height="wrap_content"
                     android:hint="Password"
                     android:inputType="textPassword"
@@ -359,7 +342,7 @@
 
             <RelativeLayout
                 android:id="@+id/confirmPasswordLayout"
-                android:layout_width="300dp"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -377,7 +360,7 @@
 
                 <EditText
                     android:id="@+id/etConfirmPassword"
-                    android:layout_width="250dp"
+                    android:layout_width="350dp"
                     android:layout_height="wrap_content"
                     android:hint="Confirm Password"
                     android:inputType="textPassword"
@@ -443,7 +426,7 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
-                android:backgroundTint="@color/green"
+                android:backgroundTint="@color/orange"
                 android:padding="12dp"
                 android:text="Sign Up"
                 android:textColor="@android:color/white"

@@ -1,11 +1,13 @@
 package com.example.agrionion;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -30,6 +32,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
+    private SharedPreferences sharedPreferences;
+    private static final String PREF_NAME = "LoginPrefs";
+    private static final String KEY_EMAIL = "email";
+    private static final String KEY_REMEMBER = "rememberMe";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,42 +56,56 @@ public class MainActivity extends AppCompatActivity {
         TextView SignUp = findViewById(R.id.SignUp);
         TextView ForgotPassword = findViewById(R.id.ForgotPassword);
         ProgressBar progressBar = findViewById(R.id.progressBar);
-
-
+        CheckBox checkBoxRememberMe = findViewById(R.id.checkBox);
         ImageView togglePassword = findViewById(R.id.ivTogglePassword);
+
+        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+
+        // Load saved email if "Remember Me" was checked
+        if (sharedPreferences.getBoolean(KEY_REMEMBER, false)) {
+            etEmail.setText(sharedPreferences.getString(KEY_EMAIL, ""));
+            checkBoxRememberMe.setChecked(true);
+        }
+
+        checkBoxRememberMe.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            if (isChecked) {
+                editor.putString(KEY_EMAIL, etEmail.getText().toString());
+                editor.putBoolean(KEY_REMEMBER, true);
+            } else {
+                editor.remove(KEY_EMAIL);
+                editor.putBoolean(KEY_REMEMBER, false);
+            }
+            editor.apply();
+        });
 
         togglePassword.setOnClickListener(v -> {
             if (etPassword.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD)) {
                 etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                togglePassword.setImageResource(R.drawable.eye_svgrepo_com); // Replace with your open-eye icon
+                togglePassword.setImageResource(R.drawable.eye_svgrepo_com);
             } else {
                 etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                togglePassword.setImageResource(R.drawable.hide_close_eye_eye_svgrepo_com); // Replace with your closed-eye icon
+                togglePassword.setImageResource(R.drawable.hide_close_eye_eye_svgrepo_com);
             }
-            etPassword.setSelection(etPassword.length()); // Keeps cursor at the end
+            etPassword.setSelection(etPassword.length());
         });
-
 
         SignUp.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SignUp.class);
             startActivity(intent);
-
         });
 
         ForgotPassword.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ForgotPassword.class);
             startActivity(intent);
-
         });
 
-
-        // Handle Login Button Click
         btnLogin.setOnClickListener(v -> {
 
-                    Intent intent = new Intent(MainActivity.this, Homepage.class);
-                    startActivity(intent);
-
-            /*String email = etEmail.getText().toString().trim();
+            Intent intent = new Intent(MainActivity.this , Homepage.class);
+            startActivity(intent);
+            /*
+            String email = etEmail.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
 
             if (email.isEmpty()) {
@@ -104,8 +124,6 @@ public class MainActivity extends AppCompatActivity {
 
              */
         });
-
-
     }
 
     private void loginUser(String email, String password, ProgressBar progressBar, Button btnLogin) {
@@ -117,49 +135,30 @@ public class MainActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.GONE);
                     btnLogin.setEnabled(true);
 
-                    Log.d("LoginResponse", "Server Response: " + response); // Debugging line
-
                     try {
                         JSONObject jsonResponse = new JSONObject(response);
-
-                        // Check if farmer_status exists in response
                         if (!jsonResponse.has("farmer_status")) {
                             Toast.makeText(MainActivity.this, "Error: Farmer status is missing!", Toast.LENGTH_LONG).show();
                             return;
                         }
 
                         String farmerStatus = jsonResponse.getString("farmer_status");
-                        Log.d("LoginSuccess", "Farmer Status: " + farmerStatus);
-
                         Toast.makeText(MainActivity.this, "Login Successful!", Toast.LENGTH_SHORT).show();
 
                         if ("1".equals(farmerStatus)) {
                             startActivity(new Intent(MainActivity.this, Homepage.class));
-                            finish();
                         } else {
                             startActivity(new Intent(MainActivity.this, customerHomepage.class));
-                            finish();
                         }
+                        finish();
                     } catch (JSONException e) {
-                        Log.e("LoginError", "JSON Parsing error: " + e.getMessage());
                         Toast.makeText(MainActivity.this, "Error parsing server response", Toast.LENGTH_LONG).show();
                     }
-
-
-    },
+                },
                 error -> {
                     progressBar.setVisibility(View.GONE);
                     btnLogin.setEnabled(true);
-
-                    if (error.networkResponse != null) {
-                        int statusCode = error.networkResponse.statusCode;
-                        String errorMsg = new String(error.networkResponse.data);
-                        Log.e("VolleyError", "Error " + statusCode + ": " + errorMsg);
-                        Toast.makeText(MainActivity.this, "Error " + statusCode + ": " + errorMsg, Toast.LENGTH_LONG).show();
-                    } else {
-                        Log.e("VolleyError", "Network error: " + error.toString());
-                        Toast.makeText(MainActivity.this, "Network error: " + error.toString(), Toast.LENGTH_LONG).show();
-                    }
+                    Toast.makeText(MainActivity.this, "Network error: " + error.toString(), Toast.LENGTH_LONG).show();
                 }) {
             @Override
             protected Map<String, String> getParams() {
@@ -178,9 +177,5 @@ public class MainActivity extends AppCompatActivity {
         };
 
         queue.add(request);
-
-
-
     }
-
 }

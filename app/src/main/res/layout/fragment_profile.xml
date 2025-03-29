@@ -63,7 +63,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.07"
             app:shapeAppearanceOverlay="@style/CircleImageView"
-            app:strokeColor="@color/green"
+            app:strokeColor="@color/orange"
             app:strokeWidth="2dp" />
 
             <!-- Name and Role (Stacked Vertically) -->

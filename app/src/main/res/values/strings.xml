@@ -8,4 +8,10 @@
     <string name="market">Market</string>
     <string name="expenses">Expenses</string>
     <string name="profile">Profile</string>
+
+    <string-array name="gender_options">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
 </resources>

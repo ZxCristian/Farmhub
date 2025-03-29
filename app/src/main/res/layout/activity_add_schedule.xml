@@ -308,7 +308,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="Choose Image"
-                    android:backgroundTint="@color/green"
+                    android:backgroundTint="@color/orange"
                     android:textColor="@android:color/black" />
 
                 <ImageView
@@ -326,7 +326,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="120dp"
                     android:layout_marginTop="50dp"
-                    android:backgroundTint="@color/green"
+                    android:backgroundTint="@color/orange"
                     android:padding="10dp"
                     android:text="Set Schedule"
                     android:textColor="@color/black"

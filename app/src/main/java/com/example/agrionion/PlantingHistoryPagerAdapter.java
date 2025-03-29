@@ -26,6 +26,6 @@ public class PlantingHistoryPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 2; // Only two tabs
+        return 2;
     }
 }
