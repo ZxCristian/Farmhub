@@ -4,179 +4,192 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
-    <!-- Logo and App Name -->
+    <!-- Logo and Notification Bar -->
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="15dp"
+        android:padding="16dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
+        <Space
             android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:layout_width="150dp"
             android:layout_height="50dp"
-            android:layout_weight="1"
             android:contentDescription="App Logo"
             android:src="@drawable/fhlogolong"
-            android:paddingStart="30dp"/>
+            android:scaleType="fitCenter"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
         <ImageView
             android:id="@+id/notification"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:background="?attr/selectableItemBackground"
             android:contentDescription="Notification Bell"
             android:src="@drawable/notification_bell_on_svgrepo_com__1_"
-            android:clickable="true" />
+            android:clickable="true"
+            android:focusable="true"/>
     </LinearLayout>
-
 
     <!-- Weather Widget -->
-    <ImageView
-        android:id="@+id/weather_gif"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_margin="16dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="@+id/weather_card"
-        app:layout_constraintEnd_toEndOf="@+id/weather_card"
-        app:layout_constraintStart_toStartOf="@+id/weather_card"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:id="@+id/weather_card"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@android:color/transparent"
-        android:orientation="vertical"
-        android:padding="16dp"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardBackgroundColor="#80000000"
+        app:cardElevation="2dp"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout"
+        android:maxHeight="250dp">
 
-        <TextView
-            android:id="@+id/weather_day"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/weather_gif"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:contentDescription="Weather Background"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:shadowColor="#80000000"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="4"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"/>
+            <TextView
+                android:id="@+id/weather_day_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"
+                android:contentDescription="Weather Day and City"
+                android:shadowColor="#80000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="4"/>
 
-        <TextView
-            android:id="@+id/weather_temp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            <TextView
+                android:id="@+id/weather_temp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="48sp"
+                android:textStyle="bold"
+                android:contentDescription="Temperature"
+                android:shadowColor="#80000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="4"/>
 
-            android:textColor="@android:color/white"
-            android:textSize="48sp"
-            android:shadowColor="#80000000"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="4"
-            android:textStyle="bold"
-            android:layout_marginStart="10dp" />
+            <TextView
+                android:id="@+id/weather_condition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp"
+                android:shadowColor="#80000000"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="4"/>
 
-        <TextView
-            android:id="@+id/weather_condition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:shadowColor="#80000000"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="4"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:layout_marginStart="10dp" />
+            <!-- Horizontal LinearLayout for wind and rain chance -->
 
-        <TextView
-            android:id="@+id/weather_wind_speed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+                <TextView
+                    android:id="@+id/weather_wind_speed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="16dp"
+                    android:shadowColor="#80000000"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="4"/>
 
-            android:textColor="@android:color/white"
-            android:shadowColor="#80000000"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="4"
-            android:textStyle="bold"
-            android:layout_marginStart="10dp" />
-
-        <TextView
-            android:id="@+id/weather_city"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:shadowColor="#80000000"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="4"
-            android:layout_marginStart="10dp" />
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/weather_rain_chance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:shadowColor="#80000000"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="4"/>
 
 
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Weekly Forecast Title -->
     <TextView
         android:id="@+id/SevenDayWeatherForecast"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="Weekly Weather Forecast"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/weather_card"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.064" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-
-    <!-- Recent Transactions -->
-
-
+    <!-- Forecast RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/forecastRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="10dp"
-        app:layout_constraintTop_toBottomOf="@id/SevenDayWeatherForecast" />
+        android:layout_margin="16dp"
+        android:nestedScrollingEnabled="true"
+        app:layout_constraintTop_toBottomOf="@id/SevenDayWeatherForecast"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="horizontal"/>
 
-
+    <!-- Recent Transactions Title -->
     <TextView
         android:id="@+id/transactions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="Recent Transactions"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/forecastRecyclerView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.064" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
+    <!-- Transactions RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recent_transactions"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_margin="10dp"
+        android:layout_margin="16dp"
+        android:nestedScrollingEnabled="true"
         app:layout_constraintTop_toBottomOf="@id/transactions"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_default="percent"
+        app:layout_constraintHeight_percent="0.4"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

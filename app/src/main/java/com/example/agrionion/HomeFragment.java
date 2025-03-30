@@ -18,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,9 +48,10 @@ public class HomeFragment extends Fragment {
 
     private static final String API_KEY = "93fb25098cd2e3ce7f2b8e7229598ac6";
     private static final int REQUEST_LOCATION_PERMISSION = 1;
+    private static final String TAG = "HomeFragment";
 
     // UI Elements
-    private TextView weatherCity, weatherDay, weatherTemp, weatherCondition, weatherWindSpeed;
+    private TextView weatherDayCity, weatherTemp, weatherCondition, weatherWindSpeed, weatherRainChance; // New field
     private ImageView weatherGif, notification;
     private RecyclerView forecastRecyclerView, transactionsRecyclerView;
     private ForecastAdapter forecastAdapter;
@@ -67,21 +67,17 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_homepage, container, false);
 
-        // Initialize thread pool and handler
+        // Initialize threading utilities
         executorService = Executors.newFixedThreadPool(2);
         mainHandler = new Handler(Looper.getMainLooper());
 
-        // Setup UI elements
+        // Setup UI and RecyclerViews
         setupUIElements(view);
-
-        // Setup RecyclerViews
         setupRecyclerViews(view);
 
-        // Setup location services
+        // Initialize location services
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
         setupLocationCallback();
-
-        // Request location updates
         requestAccurateLocation();
 
         return view;
@@ -89,13 +85,19 @@ public class HomeFragment extends Fragment {
 
     private void setupUIElements(View view) {
         weatherGif = view.findViewById(R.id.weather_gif);
-        weatherCity = view.findViewById(R.id.weather_city);
-        weatherDay = view.findViewById(R.id.weather_day);
+        weatherDayCity = view.findViewById(R.id.weather_day_city);
         weatherTemp = view.findViewById(R.id.weather_temp);
         weatherCondition = view.findViewById(R.id.weather_condition);
         weatherWindSpeed = view.findViewById(R.id.weather_wind_speed);
-
+        weatherRainChance = view.findViewById(R.id.weather_rain_chance); // Initialize new field
         notification = view.findViewById(R.id.notification);
+
+        if (weatherDayCity == null || weatherTemp == null || weatherCondition == null ||
+                weatherWindSpeed == null || weatherRainChance == null || weatherGif == null) {
+            Log.e(TAG, "One or more UI elements not found in fragment_homepage.xml");
+            return;
+        }
+
         notification.setOnClickListener(v ->
                 startActivity(new Intent(getActivity(), Notification.class)));
     }
@@ -108,14 +110,15 @@ public class HomeFragment extends Fragment {
         transactionAdapter = new TransactionAdapter(transactionList);
         transactionsRecyclerView.setAdapter(transactionAdapter);
 
-        // Forecast RecyclerView
+        // Forecast RecyclerView (Horizontal, up to 7 days excluding today)
         forecastRecyclerView = view.findViewById(R.id.forecastRecyclerView);
-        forecastRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-        forecastList = new ArrayList<>();
+        LinearLayoutManager forecastLayoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false);
+        forecastRecyclerView.setLayoutManager(forecastLayoutManager);
+        forecastList = new ArrayList<>(7);
         forecastAdapter = new ForecastAdapter(forecastList);
         forecastRecyclerView.setAdapter(forecastAdapter);
 
-        // Load initial dummy data
+        // Optional: Remove if you don’t want initial dummy data
         loadInitialForecastData();
     }
 
@@ -132,10 +135,12 @@ public class HomeFragment extends Fragment {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dayFormat = new SimpleDateFormat("E", Locale.getDefault());
 
-        for (int i = 1; i <= 6; i++) {
-            calendar.add(Calendar.DAY_OF_YEAR, 1);
+        forecastList.clear();
+        calendar.add(Calendar.DAY_OF_YEAR, 1); // Start from tomorrow
+        for (int i = 0; i < 7; i++) {
             String dayName = dayFormat.format(calendar.getTime());
-            forecastList.add(new ForecastModel(dayName, "25°C", "Sunny", R.drawable.clear_sky));
+            forecastList.add(new ForecastModel(dayName, "25°C", "Sunny", R.drawable.clear_sky, "10% chance of rain"));
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
         }
         forecastAdapter.notifyDataSetChanged();
     }
@@ -147,6 +152,8 @@ public class HomeFragment extends Fragment {
                 Location location = locationResult.getLastLocation();
                 if (location != null) {
                     fetchWeatherData(location.getLatitude(), location.getLongitude());
+                } else {
+                    Log.w(TAG, "Location result was null");
                 }
             }
         };
@@ -161,17 +168,21 @@ public class HomeFragment extends Fragment {
 
         LocationRequest locationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(5000)
-                .setFastestInterval(2000);
+                .setInterval(10000)
+                .setFastestInterval(5000);
 
-        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
+        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+                .addOnFailureListener(e -> Log.e(TAG, "Failed to request location updates", e));
 
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(location -> {
                     if (location != null) {
                         fetchWeatherData(location.getLatitude(), location.getLongitude());
+                    } else {
+                        Log.w(TAG, "Last known location unavailable");
                     }
-                });
+                })
+                .addOnFailureListener(e -> Log.e(TAG, "Failed to get last location", e));
     }
 
     private void fetchWeatherData(double latitude, double longitude) {
@@ -188,11 +199,12 @@ public class HomeFragment extends Fragment {
                 String forecastResponse = fetchData(forecastUrl);
 
                 mainHandler.post(() -> {
-                    updateUI(currentWeatherResponse);
+                    updateCurrentWeatherUI(currentWeatherResponse, forecastResponse); // Pass forecast for rain chance
                     updateForecastUI(forecastResponse);
                 });
             } catch (Exception e) {
-                Log.e("WeatherFetch", "Error fetching weather data", e);
+                Log.e(TAG, "Error fetching weather data", e);
+                mainHandler.post(() -> showErrorState());
             }
         });
     }
@@ -201,8 +213,13 @@ public class HomeFragment extends Fragment {
         URL url = new URL(urlString);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
-        connection.setConnectTimeout(5000);
-        connection.setReadTimeout(5000);
+        connection.setConnectTimeout(10000);
+        connection.setReadTimeout(10000);
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode != HttpURLConnection.HTTP_OK) {
+            throw new Exception("HTTP error code: " + responseCode);
+        }
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
             StringBuilder result = new StringBuilder();
@@ -216,33 +233,62 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void updateUI(String result) {
+    private void updateCurrentWeatherUI(String currentWeatherResult, String forecastResult) {
         try {
-            JSONObject jsonObject = new JSONObject(result);
+            // Parse current weather
+            JSONObject jsonObject = new JSONObject(currentWeatherResult);
             String city = jsonObject.getString("name");
             String weather = jsonObject.getJSONArray("weather").getJSONObject(0).getString("main");
             double temp = jsonObject.getJSONObject("main").getDouble("temp");
-            double windSpeed = jsonObject.getJSONObject("wind").getDouble("speed");
+            double windSpeed = jsonObject.getJSONObject("wind").getDouble("speed") * 3.6;
 
-            weatherCity.setText(city);
-            weatherDay.setText("Today");
+            SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
+            String day = dayFormat.format(new Date());
+
+            weatherDayCity.setText(String.format("%s - %s", day, city));
+            weatherDayCity.setContentDescription(String.format("Weather for %s in %s", day, city));
             weatherTemp.setText(String.format(Locale.getDefault(), "%.1f°C", temp));
+            weatherTemp.setContentDescription(String.format("%.1f degrees Celsius", temp));
             weatherCondition.setText(weather);
             weatherWindSpeed.setText(String.format(Locale.getDefault(), "Wind: %.1f km/h", windSpeed));
 
             int gifRes = getWeatherGifResource(weather.toLowerCase());
             Glide.with(this).load(gifRes).into(weatherGif);
+
+            // Get rain chance from forecast (first 3-hour slot for today)
+            JSONObject forecastJson = new JSONObject(forecastResult);
+            JSONArray forecastArray = forecastJson.getJSONArray("list");
+            if (forecastArray.length() > 0) {
+                JSONObject firstForecast = forecastArray.getJSONObject(0);
+                double pop = firstForecast.optDouble("pop", 0.0) * 100; // Probability of precipitation
+                String rainChance = String.format(Locale.getDefault(), "%.0f%% chance of rain", pop);
+                weatherRainChance.setText(rainChance);
+                weatherRainChance.setContentDescription(rainChance);
+            } else {
+                weatherRainChance.setText("N/A");
+            }
         } catch (Exception e) {
-            Log.e("WeatherUpdate", "Error updating UI", e);
+            Log.e(TAG, "Error updating current weather UI", e);
+            showErrorState();
         }
     }
 
+    private void showErrorState() {
+        weatherDayCity.setText("Unable to load weather");
+        weatherTemp.setText("--°C");
+        weatherCondition.setText("N/A");
+        weatherWindSpeed.setText("Wind: N/A");
+        weatherRainChance.setText("N/A"); // Reset rain chance
+        Glide.with(this).load(R.drawable.sunnyday).into(weatherGif);
+        forecastList.clear();
+        forecastAdapter.notifyDataSetChanged();
+    }
+
     private int getWeatherGifResource(String condition) {
-        if (condition.contains("sunny")) return R.drawable.sunnyday;
+        if (condition.contains("sunny") || condition.contains("clear")) return R.drawable.sunnyday;
         if (condition.contains("cloud")) return R.drawable.cloudy;
         if (condition.contains("rain")) return R.drawable.raining;
         if (condition.contains("haze")) return R.drawable.haze;
-        if (condition.contains("clear")) return R.drawable.clear;
         return R.drawable.sunnyday;
     }
 
@@ -254,66 +300,66 @@ public class HomeFragment extends Fragment {
 
             SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
             SimpleDateFormat outputFormat = new SimpleDateFormat("E", Locale.getDefault());
-            Calendar today = Calendar.getInstance();
-            today.set(Calendar.HOUR_OF_DAY, 0);
-            today.set(Calendar.MINUTE, 0);
-            today.set(Calendar.SECOND, 0);
-            today.set(Calendar.MILLISECOND, 0);
+            Calendar currentDay = Calendar.getInstance();
+            currentDay.set(Calendar.HOUR_OF_DAY, 0);
+            currentDay.set(Calendar.MINUTE, 0);
+            currentDay.set(Calendar.SECOND, 0);
+            currentDay.set(Calendar.MILLISECOND, 0);
 
-            List<ForecastModel> tempForecastList = new ArrayList<>();
-            for (int i = 0; i < forecastArray.length(); i++) {
+            List<ForecastModel> tempForecastList = new ArrayList<>(7);
+            int daysAdded = 0;
+
+            for (int i = 0; i < forecastArray.length() && daysAdded < 7; i++) {
                 JSONObject dayData = forecastArray.getJSONObject(i);
                 String dateTimeString = dayData.getString("dt_txt");
                 Date date = inputFormat.parse(dateTimeString);
                 Calendar forecastDate = Calendar.getInstance();
                 forecastDate.setTime(date);
 
-                // Skip if it's today
-                if (forecastDate.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
-                        forecastDate.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)) {
-                    continue;
-                }
-
-                // Add the first forecast of each day
                 Calendar dayStart = (Calendar) forecastDate.clone();
                 dayStart.set(Calendar.HOUR_OF_DAY, 0);
                 dayStart.set(Calendar.MINUTE, 0);
                 dayStart.set(Calendar.SECOND, 0);
                 dayStart.set(Calendar.MILLISECOND, 0);
 
-                boolean dayAlreadyAdded = tempForecastList.stream().anyMatch(f ->
-                        f.getDay().equals(outputFormat.format(date)));
-
-                if (!dayAlreadyAdded) {
-                    String dayName = outputFormat.format(date);
-                    double temp = dayData.getJSONObject("main").getDouble("temp");
-                    String condition = dayData.getJSONArray("weather").getJSONObject(0).getString("main");
-
-                    int iconRes = getForecastIconResource(condition);
-                    tempForecastList.add(new ForecastModel(dayName, String.format("%.1f°C", temp), condition, iconRes));
+                // Skip today
+                if (dayStart.equals(currentDay)) {
+                    continue;
                 }
 
-                if (tempForecastList.size() >= 6) break;
+                String dayName = outputFormat.format(date);
+                if (tempForecastList.stream().anyMatch(f -> f.getDay().equals(dayName))) {
+                    continue;
+                }
+
+                if (forecastDate.get(Calendar.HOUR_OF_DAY) >= 12 || i == forecastArray.length() - 1) {
+                    double temp = dayData.getJSONObject("main").getDouble("temp");
+                    String condition = dayData.getJSONArray("weather").getJSONObject(0).getString("main");
+                    int iconRes = getForecastIconResource(condition);
+                    double pop = dayData.optDouble("pop", 0.0) * 100;
+                    String rainChance = String.format(Locale.getDefault(), "%.0f%% chance of rain", pop);
+
+                    tempForecastList.add(new ForecastModel(dayName, String.format("%.1f°C", temp), condition, iconRes, rainChance));
+                    daysAdded++;
+                }
             }
 
             forecastList.addAll(tempForecastList);
-            Log.d("ForecastUpdate", "Days added: " + forecastList.size());
-            if (forecastList.size() < 6) {
-                Log.w("ForecastUpdate", "API provided only " + forecastList.size() + " days. Expected 6.");
-            }
             forecastAdapter.notifyDataSetChanged();
+            Log.d(TAG, "Forecast days loaded: " + forecastList.size());
         } catch (Exception e) {
-            Log.e("ForecastUpdate", "Error updating forecast", e);
+            Log.e(TAG, "Error updating forecast UI", e);
+            showErrorState();
         }
     }
 
     private int getForecastIconResource(String condition) {
-        switch (condition) {
-            case "Clear": return R.drawable.clear_sky;
-            case "Clouds": return R.drawable.scattered_clouds;
-            case "Rain": return R.drawable.rain;
-            case "Thunderstorm": return R.drawable.thurderstorm;
-            case "Snow": return R.drawable.snow;
+        switch (condition.toLowerCase()) {
+            case "clear": return R.drawable.clear_sky;
+            case "clouds": return R.drawable.scattered_clouds;
+            case "rain": return R.drawable.rain;
+            case "thunderstorm": return R.drawable.thurderstorm;
+            case "snow": return R.drawable.snow;
             default: return R.drawable.clear_sky;
         }
     }
@@ -322,7 +368,7 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         fusedLocationClient.removeLocationUpdates(locationCallback);
-        executorService.shutdown();
+        executorService.shutdownNow();
     }
 
     @Override
@@ -330,6 +376,9 @@ public class HomeFragment extends Fragment {
         if (requestCode == REQUEST_LOCATION_PERMISSION && grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             requestAccurateLocation();
+        } else {
+            Log.w(TAG, "Location permission denied");
+            showErrorState();
         }
     }
 }

@@ -2,30 +2,22 @@ package com.example.agrionion;
 
 public class ForecastModel {
     private String day;
-    private String temperature;
+    private String temp;
     private String condition;
-    private int iconResId;
+    private int iconRes;
+    private String rainChance; // New field for chance of rain
 
-    public ForecastModel(String day, String temperature, String condition, int iconResId) {
+    public ForecastModel(String day, String temp, String condition, int iconRes, String rainChance) {
         this.day = day;
-        this.temperature = temperature;
+        this.temp = temp;
         this.condition = condition;
-        this.iconResId = iconResId;
+        this.iconRes = iconRes;
+        this.rainChance = rainChance;
     }
 
-    public String getDay() {
-        return day;
-    }
-
-    public String getTemperature() {  // Ensure this method exists
-        return temperature;
-    }
-
-    public String getCondition() {
-        return condition;
-    }
-
-    public int getIconResId() {
-        return iconResId;
-    }
+    public String getDay() { return day; }
+    public String getTemp() { return temp; }
+    public String getCondition() { return condition; }
+    public int getIconRes() { return iconRes; }
+    public String getRainChance() { return rainChance; }
 }

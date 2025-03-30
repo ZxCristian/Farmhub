@@ -3,7 +3,9 @@ package com.example.agrionion;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
@@ -31,21 +33,39 @@ public class Notification extends AppCompatActivity {
 
         adapter = new NotificationAdapter(notificationList);
         recyclerView.setAdapter(adapter);
+
+        // Swipe to dismiss
+        ItemTouchHelper.SimpleCallback swipeCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                notificationList.remove(position);
+                adapter.notifyItemRemoved(position);
+            }
+        };
+        new ItemTouchHelper(swipeCallback).attachToRecyclerView(recyclerView);
+
+        fetchPestAndDiseaseUpdates();
     }
 
     private void loadNotifications() {
-        // Dummy data for testing
         notificationList.add(new NotificationModel("New Order", "You have a new order!", "10:30 AM"));
-        notificationList.add(new NotificationModel("Payment Received", "Your payment was successful.", "11:15 AM"));
-        notificationList.add(new NotificationModel("Delivery Update", "Your package is on the way.", "1:45 PM"));
-        notificationList.add(new NotificationModel("Watering", "Your Eggplant is schedule to water today.", "5:45 AM"));
-        notificationList.add(new NotificationModel("Insecticide", "Your Chinese Cabbage is scheduled to be Insecticide today.", "6:00 AM"));
-        notificationList.add(new NotificationModel("Harvest", "Your Chili's need to be harvest today", "7:45 AM"));
-        notificationList.add(new NotificationModel("New Order", "You have a new order!", "10:30 AM"));
-        notificationList.add(new NotificationModel("Payment Received", "Your payment was successful.", "11:15 AM"));
-        notificationList.add(new NotificationModel("Delivery Update", "Your package is on the way.", "1:45 PM"));
-        notificationList.add(new NotificationModel("Watering", "Your Eggplant is schedule to water today.", "5:45 AM"));
-        notificationList.add(new NotificationModel("Insecticide", "Your Chinese Cabbage is scheduled to be Insecticide today.", "6:00 AM"));
-        notificationList.add(new NotificationModel("Harvest", "Your Chili's need to be harvest today", "7:45 AM"));
+        notificationList.add(new NotificationModel("Watering", "Your Eggplant is scheduled to water today.", "5:45 AM"));
+    }
+
+    private void fetchPestAndDiseaseUpdates() {
+        String currentTime = java.text.SimpleDateFormat.getTimeInstance().format(new java.util.Date());
+        adapter.addNotification(new NotificationModel(
+                "Pest Alert", "Fruit and Shoot Borer detected on Eggplant. Inspect shoots and fruits.", currentTime
+        ));
+        adapter.addNotification(new NotificationModel(
+                "Disease Alert", "Bacterial Wilt risk on Eggplant. Check for wilting.", currentTime
+        ));
+        recyclerView.smoothScrollToPosition(0);
     }
 }
