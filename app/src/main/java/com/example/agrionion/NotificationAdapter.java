@@ -1,57 +1,50 @@
 package com.example.agrionion;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
 import java.util.List;
 
-public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ViewHolder> {
+public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.NotificationViewHolder> {
     private List<NotificationModel> notificationList;
 
     public NotificationAdapter(List<NotificationModel> notificationList) {
-        this.notificationList = notificationList;
+        this.notificationList = notificationList != null ? notificationList : new ArrayList<>();
+    }
+
+    public void addNotification(NotificationModel notification) {
+        notificationList.add(notification);
+        notifyItemInserted(notificationList.size() - 1);
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_notification, parent, false);
-        return new ViewHolder(view);
+    public NotificationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notification, parent, false);
+        return new NotificationViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull NotificationViewHolder holder, int position) {
         NotificationModel notification = notificationList.get(position);
-        holder.title.setText(notification.getTitle());
-        holder.message.setText(notification.getMessage());
-        holder.timestamp.setText(notification.getTimestamp());
+        holder.textTitle.setText(notification.getTitle());
+        String preview = notification.getMessage().length() > 50 ? notification.getMessage().substring(0, 50) + "..." : notification.getMessage();
+        holder.textMessage.setText(preview);
+        holder.textTimestamp.setText(notification.getTimestamp());
 
-        // Set icon based on notification type
-        if (notification.getTitle().toLowerCase().contains("pest")) {
-            holder.icon.setImageResource(R.drawable.bug_entomology_svgrepo_com); // Add this drawable
-        } else if (notification.getTitle().toLowerCase().contains("disease")) {
-            holder.icon.setImageResource(R.drawable.medical_disease_sick_svgrepo_com);
-            // Add this drawable
-        }
-        else if (notification.getTitle().toLowerCase().contains("water")) {
-            holder.icon.setImageResource(R.drawable.water_drop_svgrepo_com);
-            // Add this drawable
-        }
-        else if (notification.getTitle().toLowerCase().contains("harvest")) {
-            holder.icon.setImageResource(R.drawable.harvest_svgrepo_com);
-            // Add this drawable
-        }
-        else if (notification.getTitle().toLowerCase().contains("order")) {
-            holder.icon.setImageResource(R.drawable.write_order_order_online_shop_svgrepo_com);
-            // Add this drawable
-        }else {
-            holder.icon.setImageResource(R.drawable.harvest_svgrepo_com); // Default icon
-        }
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(holder.itemView.getContext(), Details.class);
+            intent.putExtra("title", notification.getTitle());
+            intent.putExtra("message", notification.getMessage()); // Full message
+            intent.putExtra("timestamp", notification.getTimestamp());
+            intent.putExtra("pdfUrl", notification.getPdfUrl());
+            holder.itemView.getContext().startActivity(intent);
+        });
     }
 
     @Override
@@ -59,21 +52,14 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         return notificationList.size();
     }
 
-    public void addNotification(NotificationModel notification) {
-        notificationList.add(0, notification);
-        notifyItemInserted(0);
-    }
+    static class NotificationViewHolder extends RecyclerView.ViewHolder {
+        TextView textTitle, textMessage, textTimestamp;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView title, message, timestamp;
-        ImageView icon;
-
-        public ViewHolder(@NonNull View itemView) {
+        NotificationViewHolder(@NonNull View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.textTitle);
-            message = itemView.findViewById(R.id.textMessage);
-            timestamp = itemView.findViewById(R.id.textTimestamp);
-            icon = itemView.findViewById(R.id.iconNotification);
+            textTitle = itemView.findViewById(R.id.textTitle);
+            textMessage = itemView.findViewById(R.id.textMessage);
+            textTimestamp = itemView.findViewById(R.id.textTimestamp);
         }
     }
 }
