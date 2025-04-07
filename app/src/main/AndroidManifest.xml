@@ -52,7 +52,7 @@
             android:name=".EditProfile"
             android:exported="false" />
         <activity
-            android:name=".customerHomepage"
+            android:name=".CustomerHomepage"
             android:exported="false" />
         <activity
             android:name=".Notification"

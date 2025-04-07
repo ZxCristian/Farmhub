@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -102,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnLogin.setOnClickListener(v -> {
 
-            Intent intent = new Intent(MainActivity.this , Homepage.class);
+            Intent intent = new Intent(MainActivity.this , CustomerHomepage.class);
             startActivity(intent);
             /*
             String email = etEmail.getText().toString().trim();
@@ -148,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                         if ("1".equals(farmerStatus)) {
                             startActivity(new Intent(MainActivity.this, Homepage.class));
                         } else {
-                            startActivity(new Intent(MainActivity.this, customerHomepage.class));
+                            startActivity(new Intent(MainActivity.this, CustomerHomepage.class));
                         }
                         finish();
                     } catch (JSONException e) {
