@@ -1,12 +1,11 @@
 package com.example.agrionion;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -27,7 +26,6 @@ public class ScheduleFragment extends Fragment {
     private List<ScheduleItem> scheduleList;
     private FloatingActionButton fabAddPlant;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,13 +38,11 @@ public class ScheduleFragment extends Fragment {
         // Initialize Floating Action Button
         fabAddPlant = view.findViewById(R.id.fabAddPlant);
         fabAddPlant.setOnClickListener(v -> {
-            // Handle adding a new schedule
             Intent intent = new Intent(getActivity(), AddSchedule.class);
-            startActivity(intent);
+            startActivityForResult(intent, 1);
         });
 
-
-        // Load schedule data
+        // Initialize schedule list
         scheduleList = new ArrayList<>();
         loadScheduleData();
 
@@ -57,22 +53,72 @@ public class ScheduleFragment extends Fragment {
         return view;
     }
 
-    private void loadScheduleData() {
-        scheduleList.add(new ScheduleItem("Eggplant", formatDate("05-06-2025"), formatDate("07-06-2025"), formatDate("10-06-2025"), formatDate("12-06-2025"), R.drawable.eggplant));
-        scheduleList.add(new ScheduleItem("Chinese Cabbage", formatDate("06-12-2025"), formatDate("08-06-2025"), formatDate("12-06-2025"), formatDate("15-06-2025"), R.drawable.petchay));
-        scheduleList.add(new ScheduleItem("String Beans", formatDate("07-06-2025"), formatDate("09-06-2025"), formatDate("15-06-2025"), formatDate("20-06-2025"), R.drawable.string_beans));
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == getActivity().RESULT_OK && data != null) {
+            String plantId = data.getStringExtra("plantId");
+            String plantName = data.getStringExtra("plantName");
+            String waterDate = data.getStringExtra("waterDate");
+            String fertilizerDate = data.getStringExtra("fertilizerDate");
+            String insecticideDate = data.getStringExtra("insecticideDate");
+            String harvestDate = data.getStringExtra("harvestDate");
+            String imageUri = data.getStringExtra("imageUri");
+
+            ScheduleItem newItem = new ScheduleItem(
+                    plantId,
+                    plantName,
+                    formatDate(waterDate),
+                    formatDate(fertilizerDate),
+                    formatDate(insecticideDate),
+                    formatDate(harvestDate),
+                    imageUri
+            );
+            scheduleList.add(newItem);
+            scheduleAdapter.notifyDataSetChanged();
+        }
     }
 
-    // Helper method to convert date format
+    private void loadScheduleData() {
+        // Sample data with dates in "yyyy-MM-dd" format
+        scheduleList.add(new ScheduleItem(
+                "123456789012345",
+                "Eggplant",
+                formatDate("2025-06-05"),
+                formatDate("2025-06-07"),
+                formatDate("2025-06-10"),
+                formatDate("2025-06-12"),
+                Uri.parse("android.resource://" + getContext().getPackageName() + "/" + R.drawable.eggplant).toString()
+        ));
+        scheduleList.add(new ScheduleItem(
+                "123456789012346",
+                "Chinese Cabbage",
+                formatDate("2025-12-06"),
+                formatDate("2025-06-08"),
+                formatDate("2025-06-12"),
+                formatDate("2025-06-15"),
+                Uri.parse("android.resource://" + getContext().getPackageName() + "/" + R.drawable.petchay).toString()
+        ));
+        scheduleList.add(new ScheduleItem(
+                "123456789012347",
+                "String Beans",
+                formatDate("2025-06-07"),
+                formatDate("2025-06-09"),
+                formatDate("2025-06-15"),
+                formatDate("2025-06-20"),
+                Uri.parse("android.resource://" + getContext().getPackageName() + "/" + R.drawable.string_beans).toString()
+        ));
+    }
+
     private String formatDate(String inputDate) {
-        SimpleDateFormat inputFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         SimpleDateFormat outputFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
         try {
             Date date = inputFormat.parse(inputDate);
             return outputFormat.format(date);
         } catch (ParseException e) {
             e.printStackTrace();
-            return inputDate; // Return the original date in case of an error
+            return inputDate; // Return original input if parsing fails
         }
     }
 }

@@ -42,7 +42,6 @@
                 android:src="@drawable/fhlogolong" />
         </LinearLayout>
 
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -59,14 +58,40 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
+                <!-- Plant ID -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tvPlantIdLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Plant ID:"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tvPlantId"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/gray_semi_rounded"
+                        android:textSize="20sp"
+                        android:text="Auto-generated ID"
+                        android:textColor="@android:color/black" />
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/tvPlantName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="Plant Name:"
                     android:textSize="20sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/headerLayout" />
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <EditText
                     android:id="@+id/etPlantName"
@@ -174,7 +199,6 @@
                         android:src="@drawable/calendar_days_svgrepo_com"/>
                 </LinearLayout>
 
-
                 <TextView
                     android:id="@+id/tvInsecticideUsed"
                     android:layout_width="wrap_content"
@@ -232,7 +256,6 @@
                         android:paddingStart="5dp"
                         android:src="@drawable/calendar_days_svgrepo_com"/>
                 </LinearLayout>
-
 
                 <TextView
                     android:id="@+id/tvFertilizerUsed"
@@ -335,12 +358,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/etHarvestDate" />
 
-
-
             </LinearLayout>
-
-
         </ScrollView>
-
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

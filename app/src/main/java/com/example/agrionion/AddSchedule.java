@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Random;
 
 public class AddSchedule extends AppCompatActivity {
 
@@ -24,6 +26,7 @@ public class AddSchedule extends AppCompatActivity {
     private ImageView btnWaterCalendar, btnInsecticideCalendar, btnFertilizerCalendar, btnHarvestDate, btnBack;
     private Button btnSetSchedule, btnUploadImage;
     private ImageView ivSelectedImage;
+    private TextView tvPlantId;  // Added TextView for Plant ID
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private Uri imageUri; // Store selected image URI
@@ -40,6 +43,15 @@ public class AddSchedule extends AppCompatActivity {
         etHarvestDate = findViewById(R.id.etHarvestDate);
         etPlantName = findViewById(R.id.etPlantName);
         etPlantSeeds = findViewById(R.id.etPlantSeeds);
+
+        // Initialize Plant ID TextView
+        tvPlantId = findViewById(R.id.tvPlantId);
+
+        // Generate and set 15-digit Plant ID
+        String timestamp = String.valueOf(System.currentTimeMillis()); // Current timestamp
+        String randomNum = String.format("%05d", new Random().nextInt(100000)); // 5-digit random number
+        String uniqueId = (timestamp + randomNum).substring(0, 15); // Take first 15 digits
+        tvPlantId.setText(uniqueId);
 
         // Initialize Buttons
         btnWaterCalendar = findViewById(R.id.btnWaterCalendar);
@@ -62,6 +74,7 @@ public class AddSchedule extends AppCompatActivity {
 
         // Handle Set Schedule button click
         btnSetSchedule.setOnClickListener(v -> {
+            String plantId = tvPlantId.getText().toString().trim();  // Get Plant ID
             String waterDate = etWaterDate.getText().toString().trim();
             String insecticideDate = etInsecticideDate.getText().toString().trim();
             String fertilizerDate = etFertilizerDate.getText().toString().trim();
@@ -76,11 +89,11 @@ public class AddSchedule extends AppCompatActivity {
             } else if (imageUri == null) {  // Check if an image has been selected
                 Toast.makeText(AddSchedule.this, "Please upload an image", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(AddSchedule.this, "Schedule Set Successfully", Toast.LENGTH_SHORT).show();
-                // Add logic to save data to the database or process further
+                Toast.makeText(AddSchedule.this, "Schedule Set Successfully\nPlant ID: " + plantId,
+                        Toast.LENGTH_LONG).show();
+                finish();
             }
         });
-
 
         // Handle Image Upload
         btnUploadImage.setOnClickListener(v -> openImageChooser());

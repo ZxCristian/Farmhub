@@ -17,8 +17,8 @@
         <!-- Image on the Left -->
         <ImageView
             android:id="@+id/imgPlant"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="25dp"
             android:scaleType="centerCrop"/>
@@ -39,6 +39,16 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
+                android:paddingBottom="4dp"/>
+
+            <!-- Plant ID TextView -->
+            <TextView
+                android:id="@+id/tvPlantId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Plant ID: 123456789012345"
+                android:textSize="14sp"
+                android:textColor="@android:color/darker_gray"
                 android:paddingBottom="4dp"/>
 
             <View
