@@ -1,6 +1,8 @@
 package com.example.agrionion;
 
 import android.os.Bundle;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -44,5 +46,18 @@ public class CustomerHomepage extends AppCompatActivity {
             }
             return false;
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Logout")
+                .setMessage("Do you want to log out?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    // Handle logout logic, e.g., clearing user session and finishing activity
+                    finishAffinity(); // Closes all activities and exits app
+                })
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss())
+                .show();
     }
 }

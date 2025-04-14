@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         EditText etEmail = findViewById(R.id.etEmail);
         EditText etPassword = findViewById(R.id.etPassword);
         Button btnLogin = findViewById(R.id.btnLogin);
+        Button btnLogin1 = findViewById(R.id.btnLogin2);
         TextView SignUp = findViewById(R.id.SignUp);
         TextView ForgotPassword = findViewById(R.id.ForgotPassword);
         ProgressBar progressBar = findViewById(R.id.progressBar);
@@ -98,6 +99,15 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, ForgotPassword.class);
             startActivity(intent);
         });
+
+        btnLogin1.setOnClickListener(v -> {
+
+            Intent intent = new Intent(MainActivity.this , Homepage.class);
+            startActivity(intent);
+
+        });
+
+
 
         btnLogin.setOnClickListener(v -> {
 

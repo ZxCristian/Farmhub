@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_market"
+        android:icon="@drawable/market_stall_svgrepo_com"
+        android:title="Market" />
+    <item
+        android:id="@+id/nav_preorder"
+        android:icon="@drawable/write_order_order_online_shop_svgrepo_com"
+        android:title="Pre Order" />
+    <item
+        android:id="@+id/nav_cart"
+        android:icon="@drawable/cart_trolley_ui_5_svgrepo_com"
+        android:title="Cart" />
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/profile_1335_svgrepo_com"
+        android:title="Profile" />
+</menu>

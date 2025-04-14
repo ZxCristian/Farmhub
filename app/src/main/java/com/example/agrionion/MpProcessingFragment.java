@@ -35,9 +35,9 @@ public class MpProcessingFragment extends Fragment {
 
     private void loadPlaceholderData() {
         productList = new ArrayList<>();
-        productList.add(new ProductHistoryItem("1290", "Onion A", "2025-03-20", 150.00, "John Doe"));
-        productList.add(new ProductHistoryItem("1291", "Onion B", "2025-03-21", 180.50, "Jane Smith"));
-        productList.add(new ProductHistoryItem("1292", "Onion C", "2025-03-22", 200.00, "Alice Johnson"));
+        productList.add(new ProductHistoryItem("1290", "Onion A", "2025-03-20", 150.00, "John Doe","100"));
+        productList.add(new ProductHistoryItem("1291", "Onion B", "2025-03-21", 180.50, "Jane Smith","100"));
+        productList.add(new ProductHistoryItem("1292", "Onion C", "2025-03-22", 200.00, "Alice Johnson","100"));
 
         adapter = new MyProductHistoryAdapter(productList);
         recyclerView.setAdapter(adapter);

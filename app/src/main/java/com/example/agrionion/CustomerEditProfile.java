@@ -29,7 +29,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 
 import java.io.IOException;
 
-public class EditProfile extends AppCompatActivity {
+public class CustomerEditProfile extends AppCompatActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private static final int STORAGE_PERMISSION_CODE = 100;
@@ -52,7 +52,7 @@ public class EditProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_edit_profile);
+        setContentView(R.layout.activity_customer_edit_profile);
 
         // Initialize views
         initializeViews();
