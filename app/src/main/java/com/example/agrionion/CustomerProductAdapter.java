@@ -28,7 +28,7 @@ public class CustomerProductAdapter extends RecyclerView.Adapter<CustomerProduct
     public void onBindViewHolder(ProductViewHolder holder, int position) {
         Product product = productList.get(position);
         holder.productName.setText(product.getName());
-        holder.productWeight.setText("Weight: " + product.getWeight());
+        holder.productAddress.setText("Address: " + product.getAddress()); // Updated to use address
         holder.productSeller.setText("Seller: " + product.getSeller());
         holder.productImage.setImageResource(product.getImageResId());
 
@@ -47,7 +47,7 @@ public class CustomerProductAdapter extends RecyclerView.Adapter<CustomerProduct
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView productImage;
         TextView productName;
-        TextView productWeight;
+        TextView productAddress; // Updated to address
         TextView productSeller;
         Button preOrderButton;
 
@@ -55,7 +55,7 @@ public class CustomerProductAdapter extends RecyclerView.Adapter<CustomerProduct
             super(itemView);
             productImage = itemView.findViewById(R.id.productImage);
             productName = itemView.findViewById(R.id.productName);
-            productWeight = itemView.findViewById(R.id.productWeight);
+            productAddress = itemView.findViewById(R.id.productAddress); // Updated to address
             productSeller = itemView.findViewById(R.id.productSeller);
             preOrderButton = itemView.findViewById(R.id.preOrderButton);
         }

@@ -28,8 +28,8 @@ public class CustomerMarketFragment extends Fragment {
 
         // Sample product data
         List<Product> productList = new ArrayList<>();
-        productList.add(new Product("Chilli", "1 kg", "FarmFresh", R.drawable.chili));
-        productList.add(new Product("String Beans", "500 g", "GreenGrow", R.drawable.petchay));
+        productList.add(new Product("Eggplant", "123 Farm Rd, Village", "FarmFresh", "1 kg", R.drawable.chili));
+        productList.add(new Product("Eggplant", "123 Farm Rd, Village", "FarmFresh", "1 kg", R.drawable.petchay));
         // Add more products as needed
 
         // Set the adapter

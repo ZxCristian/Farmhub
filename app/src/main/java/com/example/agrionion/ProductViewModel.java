@@ -13,10 +13,10 @@ public class ProductViewModel extends ViewModel {
     public ProductViewModel() {
         // Initialize both lists
         List<Product> initialProducts = new ArrayList<>();
-        initialProducts.add(new Product("Eggplant", "₱96/kg", "Seller A", R.drawable.eggplant));
-        initialProducts.add(new Product("Chinese cabbage", "₱82/kg", "Seller B", R.drawable.petchay));
-        initialProducts.add(new Product("String Beans", "₱98/kg", "Seller C", R.drawable.string_beans));
-        initialProducts.add(new Product("Chili", "₱599/kg", "Seller D", R.drawable.chili));
+        initialProducts.add(new Product("Eggplant", "123 Farm Rd, Village", "Seller A", "₱96/kg", R.drawable.eggplant));
+        initialProducts.add(new Product("Chinese Cabbage", "456 Green St, Town", "Seller B", "₱82/kg", R.drawable.petchay));
+        initialProducts.add(new Product("String Beans", "789 Market Ave, City", "Seller C", "₱98/kg", R.drawable.string_beans));
+        initialProducts.add(new Product("Chili", "101 Spice Ln, Village", "Seller D", "₱599/kg", R.drawable.chili));
 
         productList.setValue(initialProducts);
         myProducts.setValue(new ArrayList<>()); // Start empty
