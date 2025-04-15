@@ -27,8 +27,8 @@ public class CustomerPreOrderFragment extends Fragment {
 
         // Sample pre-order product data
         List<Product> productList = new ArrayList<>();
-        productList.add(new Product("Eggplant", "123 Farm Rd, Village", "FarmFresh", "1 kg", R.drawable.eggplant));
-        productList.add(new Product("Chinese Cabbage", "456 Green St, Town", "GreenGrow", "500 g", R.drawable.petchay));
+        productList.add(new Product("541821","Eggplant", "123 Farm Rd, Village", "FarmFresh", "1 kg", R.drawable.eggplant));
+        productList.add(new Product("514526","Chinese Cabbage", "456 Green St, Town", "GreenGrow", "500 g", R.drawable.petchay));
         // Add more pre-order products as needed
 
         // Set the adapter

@@ -30,6 +30,7 @@ public class CustomerProductAdapter extends RecyclerView.Adapter<CustomerProduct
         holder.productName.setText(product.getName());
         holder.productAddress.setText("Address: " + product.getAddress()); // Updated to use address
         holder.productSeller.setText("Seller: " + product.getSeller());
+        holder.prebuyid.setText(product.getId());
         holder.productImage.setImageResource(product.getImageResId());
 
         // Pre-Order button click listener
@@ -47,6 +48,8 @@ public class CustomerProductAdapter extends RecyclerView.Adapter<CustomerProduct
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView productImage;
         TextView productName;
+
+        TextView prebuyid;
         TextView productAddress; // Updated to address
         TextView productSeller;
         Button preOrderButton;
@@ -57,6 +60,7 @@ public class CustomerProductAdapter extends RecyclerView.Adapter<CustomerProduct
             productName = itemView.findViewById(R.id.productName);
             productAddress = itemView.findViewById(R.id.productAddress); // Updated to address
             productSeller = itemView.findViewById(R.id.productSeller);
+            prebuyid = itemView.findViewById(R.id.PreBuyID);
             preOrderButton = itemView.findViewById(R.id.preOrderButton);
         }
     }
