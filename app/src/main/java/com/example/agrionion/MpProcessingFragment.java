@@ -4,21 +4,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class MpProcessingFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private MyProductHistoryAdapter adapter;
-    private List<ProductHistoryItem> productList;
+    private ProductViewModel productViewModel;
 
     @Nullable
     @Override
@@ -28,18 +26,16 @@ public class MpProcessingFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        loadPlaceholderData();
+        productViewModel = new ViewModelProvider(this).get(ProductViewModel.class);
+
+        adapter = new MyProductHistoryAdapter(new ArrayList<>());
+        recyclerView.setAdapter(adapter);
+
+        productViewModel.getProcessingProducts().observe(getViewLifecycleOwner(), products -> {
+            adapter.setProductList(products);
+            adapter.notifyDataSetChanged();
+        });
 
         return view;
-    }
-
-    private void loadPlaceholderData() {
-        productList = new ArrayList<>();
-        productList.add(new ProductHistoryItem("1290", "Onion A", "2025-03-20", 150.00, "John Doe","100"));
-        productList.add(new ProductHistoryItem("1291", "Onion B", "2025-03-21", 180.50, "Jane Smith","100"));
-        productList.add(new ProductHistoryItem("1292", "Onion C", "2025-03-22", 200.00, "Alice Johnson","100"));
-
-        adapter = new MyProductHistoryAdapter(productList);
-        recyclerView.setAdapter(adapter);
     }
 }

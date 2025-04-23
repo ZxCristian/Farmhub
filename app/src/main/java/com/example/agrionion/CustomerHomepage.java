@@ -51,8 +51,8 @@ public class CustomerHomepage extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
-                .setTitle("Logout")
-                .setMessage("Do you want to log out?")
+                .setTitle("Close the App")
+                .setMessage("Are you sure you want to close the app?")
                 .setPositiveButton("Yes", (dialog, which) -> {
                     // Handle logout logic, e.g., clearing user session and finishing activity
                     finishAffinity(); // Closes all activities and exits app

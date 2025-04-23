@@ -4,18 +4,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyProductHistoryAdapter extends RecyclerView.Adapter<MyProductHistoryAdapter.ViewHolder> {
 
-    private List<ProductHistoryItem> productList;
+    private List<Product> productList;
 
-    public MyProductHistoryAdapter(List<ProductHistoryItem> productList) {
-        this.productList = productList;
+    public MyProductHistoryAdapter(List<Product> productList) {
+        this.productList = new ArrayList<>(productList);
+    }
+
+    public void setProductList(List<Product> newProductList) {
+        this.productList.clear();
+        this.productList.addAll(newProductList != null ? newProductList : new ArrayList<>());
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -28,13 +33,13 @@ public class MyProductHistoryAdapter extends RecyclerView.Adapter<MyProductHisto
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ProductHistoryItem product = productList.get(position);
-        holder.txtProductID.setText(product.getProductID());
-        holder.txtProductName.setText(product.getProductName());
-        holder.txtDate.setText(product.getDate());
-        holder.txtPrice.setText("₱" + product.getPrice());
-        holder.txtBuyer.setText(product.getBuyer());
-        holder.txtQuantity.setText(product.getQuantity());
+        Product product = productList.get(position);
+        holder.txtProductID.setText(product.getId() != null ? product.getId() : "N/A");
+        holder.txtProductName.setText(product.getName() != null ? product.getName() : "Unknown");
+        holder.txtDate.setText(product.getDate() != null ? product.getDate() : "N/A");
+        holder.txtPrice.setText(product.getPrice() > 0 ? "₱" + String.format("%.2f", product.getPrice()) : "₱0.00");
+        holder.txtBuyer.setText(product.getBuyer() != null ? product.getBuyer() : "N/A");
+        holder.txtQuantity.setText(product.getQuantity() != null ? product.getQuantity() : "N/A");
     }
 
     @Override
@@ -53,7 +58,6 @@ public class MyProductHistoryAdapter extends RecyclerView.Adapter<MyProductHisto
             txtQuantity = itemView.findViewById(R.id.txtQuantity);
             txtPrice = itemView.findViewById(R.id.txtPrice);
             txtBuyer = itemView.findViewById(R.id.txtBuyer);
-
         }
     }
 }

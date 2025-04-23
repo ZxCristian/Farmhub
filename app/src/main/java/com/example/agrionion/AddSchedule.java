@@ -26,10 +26,10 @@ public class AddSchedule extends AppCompatActivity {
     private ImageView btnWaterCalendar, btnInsecticideCalendar, btnFertilizerCalendar, btnHarvestDate, btnBack;
     private Button btnSetSchedule, btnUploadImage;
     private ImageView ivSelectedImage;
-    private TextView tvPlantId;  // Added TextView for Plant ID
+    private TextView tvPlantId;
 
     private static final int PICK_IMAGE_REQUEST = 1;
-    private Uri imageUri; // Store selected image URI
+    private Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:text="Harvest"
         android:backgroundTint="@color/orange"
-        android:textColor="@android:color/black"
+        android:textColor="@color/white"
         android:padding="5dp" />
 
 </LinearLayout>

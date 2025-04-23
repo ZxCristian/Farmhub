@@ -28,7 +28,7 @@ public class MpProductAdapter extends RecyclerView.Adapter<MpProductAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product product = productList.get(position);
         holder.productName.setText(product.getName());
-        holder.productWeight.setText("Weight: " + product.getWeight());
+        holder.productPrice.setText("Price: " + product.getPrice());
         holder.productSeller.setText("Seller: " + product.getSeller());
         holder.productImage.setImageResource(product.getImageResId());
     }
@@ -39,13 +39,13 @@ public class MpProductAdapter extends RecyclerView.Adapter<MpProductAdapter.View
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView productName, productWeight, productSeller;
+        TextView productName, productPrice, productSeller;
         ImageView productImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             productName = itemView.findViewById(R.id.productName);
-            productWeight = itemView.findViewById(R.id.productWeight);
+            productPrice = itemView.findViewById(R.id.productPrice);
             productSeller = itemView.findViewById(R.id.productSeller);
             productImage = itemView.findViewById(R.id.productImage);
         }

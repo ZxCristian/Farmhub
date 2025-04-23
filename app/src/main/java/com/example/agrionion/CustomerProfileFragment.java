@@ -1,5 +1,6 @@
 package com.example.agrionion;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -89,12 +90,23 @@ public class CustomerProfileFragment extends Fragment {
     }
 
     private void performLogout() {
-        // TODO: Implement logout logic
-        // Example: Clear user session, SharedPreferences, or Firebase auth
-        // Navigate to Login screen
-        Intent intent = new Intent(requireContext(), MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        requireActivity().finish();
+        // Create an AlertDialog to confirm logout
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Confirm Logout")
+                .setMessage("Are you sure you want to log out?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    // User confirmed logout, proceed with logout logic
+                    // Example: Clear user session, SharedPreferences, or Firebase auth
+                    Intent intent = new Intent(requireContext(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    requireActivity().finish();
+                })
+                .setNegativeButton("No", (dialog, which) -> {
+                    // User canceled, dismiss the dialog
+                    dialog.dismiss();
+                })
+                .setCancelable(true)
+                .show();
     }
 }

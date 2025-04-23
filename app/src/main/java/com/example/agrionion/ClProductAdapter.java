@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClProductAdapter extends RecyclerView.Adapter<ClProductAdapter.ProductViewHolder> {
@@ -14,7 +15,13 @@ public class ClProductAdapter extends RecyclerView.Adapter<ClProductAdapter.Prod
     private List<Product> productList;
 
     public ClProductAdapter(List<Product> productList) {
-        this.productList = productList;
+        this.productList = new ArrayList<>(productList);
+    }
+
+    public void setProductList(List<Product> newProductList) {
+        this.productList.clear();
+        this.productList.addAll(newProductList != null ? newProductList : new ArrayList<>());
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -27,9 +34,8 @@ public class ClProductAdapter extends RecyclerView.Adapter<ClProductAdapter.Prod
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = productList.get(position);
-        holder.productName.setText(product.getName());
-        holder.productWeight.setText(product.getWeight());
-        holder.productSeller.setText(product.getSeller());
+        holder.productName.setText(product.getName() != null ? product.getName() : "N/A");
+        holder.productSeller.setText(product.getSeller() != null ? product.getSeller() : "N/A");
         holder.productImage.setImageResource(product.getImageResId());
     }
 
@@ -40,13 +46,12 @@ public class ClProductAdapter extends RecyclerView.Adapter<ClProductAdapter.Prod
 
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView productImage;
-        TextView productName, productWeight, productSeller;
+        TextView productName, productPrice, productSeller;
 
         public ProductViewHolder(@NonNull View itemView) {
             super(itemView);
             productImage = itemView.findViewById(R.id.productImage);
             productName = itemView.findViewById(R.id.productName);
-            productWeight = itemView.findViewById(R.id.productWeight);
             productSeller = itemView.findViewById(R.id.productSeller);
         }
     }

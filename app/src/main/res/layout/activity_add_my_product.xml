@@ -197,7 +197,7 @@
                     android:layout_marginTop="5dp"
                     android:text="Choose Image"
                     android:backgroundTint="@color/orange"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@color/white" />
 
                 <ImageView
                     android:id="@+id/ivSelectedImage"
@@ -212,16 +212,13 @@
                     android:id="@+id/btnAddProduct"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="120dp"
                     android:layout_marginTop="50dp"
+                    android:layout_gravity="center_horizontal"
                     android:backgroundTint="@color/orange"
                     android:padding="10dp"
                     android:text="Add Product"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/etHarvestDate" />
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
 
 
             </LinearLayout>

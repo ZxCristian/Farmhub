@@ -9,6 +9,13 @@
     <string name="profile" translatable="false">Profile</string>
     <string name="pre_order" translatable="false">Pre Order</string>
 
+    <string name="product_image" translatable="false">Product Image</string>
+    <string name="placeholder_product_name" translatable="false">Product Name</string>
+    <string name="placeholder_product_id" translatable="false">Product ID</string>
+    <string name="placeholder_seller" translatable="false">Seller</string>
+    <string name="placeholder_address" translatable="false">Address</string>
+    <string name="placeholder_price" translatable="false">Price</string>
+
     <string-array name="gender_options">
         <item>Male</item>
         <item>Female</item>

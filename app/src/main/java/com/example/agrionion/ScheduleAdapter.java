@@ -63,7 +63,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
             super(itemView);
             imgPlant = itemView.findViewById(R.id.imgPlant);
             tvPlantName = itemView.findViewById(R.id.tvPlantname);
-            tvPlantId = itemView.findViewById(R.id.tvPlantId);  // Added Plant ID TextView
+            tvPlantId = itemView.findViewById(R.id.tvPlantId);
             tvDateWatering = itemView.findViewById(R.id.tvDateWatering);
             tvDateFertilizer = itemView.findViewById(R.id.tvDateFertilizer);
             tvDateInsecticide = itemView.findViewById(R.id.tvDateInsecticide);
