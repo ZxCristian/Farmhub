@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/productImage"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="10dp"/>
+
+        <TextView
+            android:id="@+id/productName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Product Name"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/productAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Address"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/productSeller"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Seller"
+            android:textSize="14sp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pre-Buy ID:"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/PreBuyID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="Pre-Buy ID:"
+            android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Pre-Order Button -->
+        <Button
+            android:id="@+id/preOrderButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pre-Order Now"
+            android:textSize="12sp"
+            android:layout_gravity="end"
+            android:padding="8dp"
+            android:backgroundTint="#4CAF50" /> <!-- Green color for emphasis -->
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
